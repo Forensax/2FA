@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="description" content="2FA：在浏览器本地将 TOTP 密钥转换为动态验证码。无需登录，不上传、不保存密钥。">
+  <meta name="theme-color" content="#f6f8fb">
+  <title>2FA</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header><a class="brand" href="/" aria-label="2FA 首页"><span class="mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="34" height="34"><rect width="64" height="64" rx="18" fill="#15213d"/><g fill="#fff"><circle cx="22" cy="20" r="4"/><circle cx="42" cy="20" r="4"/><circle cx="22" cy="32" r="4"/><circle cx="42" cy="32" r="4"/><circle cx="22" cy="44" r="4"/></g><circle cx="42" cy="44" r="4" fill="#78a4ff"/></svg></span><strong>2FA</strong></a><span class="local-badge"><i></i> 本地安全计算</span></header>
+    <main>
+      <div class="intro"><h1>你的动态验证码。<br><span>即刻生成。</span></h1><p>粘贴 2FA 密钥，获取实时验证码。<br class="mobile-break">简单、私密，无需登录。</p></div>
+      <section class="workspace" aria-label="2FA 验证码生成器">
+        <div class="input-panel">
+          <div class="step"><span>01</span> 输入密钥</div>
+          <label for="secret">2FA 密钥或 otpauth 链接</label>
+          <div class="secret-field"><input id="secret" type="password" maxlength="4096" placeholder="粘贴你的 2FA 密钥" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="input-help error" data-1p-ignore data-lpignore="true"><button id="reveal" class="text-button" type="button" aria-label="显示密钥" aria-pressed="false">显示</button></div>
+          <p id="input-help" class="help">支持 Base32 密钥和 otpauth://totp/ 链接。</p>
+          <p id="error" class="error" role="alert" hidden></p>
+          <div id="account" class="account" hidden></div>
+          <details id="advanced"><summary>高级设置 <span>默认 SHA-1 / 6 位 / 30 秒</span></summary><div class="options"><div><label for="algorithm">算法</label><select id="algorithm"><option value="SHA1">SHA-1</option><option value="SHA256">SHA-256</option><option value="SHA512">SHA-512</option></select></div><div><label for="digits">验证码位数</label><select id="digits"><option value="6">6 位</option><option value="8">8 位</option></select></div><div><label for="period">周期（秒）</label><input id="period" type="number" min="1" max="300" step="1" value="30" inputmode="numeric"></div></div><p class="help">链接参数会自动填入。请与服务端的设置保持一致。</p></details>
+          <div class="input-actions"><button id="demo" class="text-button" type="button">试用示例 <span aria-hidden="true">↗</span></button><button id="clear" class="text-button muted" type="button" disabled>清空密钥</button></div>
+        </div>
+        <div class="result-panel">
+          <div class="result-top"><div class="step"><span>02</span> 获取验证码</div><span id="status" class="status">等待输入</span></div>
+          <div class="code-area"><p class="code-caption">当前动态验证码</p><output id="code" class="code" aria-label="当前验证码">••• •••</output><div class="timer"><progress id="progress" max="30" value="0" aria-label="验证码剩余有效时间"></progress><span id="countdown">输入密钥后自动更新</span></div></div>
+          <button id="copy" class="copy-button" type="button" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span id="copy-label">复制验证码</span></button>
+          <p id="notice" class="notice" role="status" aria-live="polite">验证码每 30 秒自动刷新</p>
+        </div>
+      </section>
+    </main>
+    <footer><div class="footer-links"><span>© 2026 2FA</span><a href="https://github.com/Forensax/2FA" target="_blank" rel="noopener noreferrer">查看源代码 <span aria-hidden="true">↗</span></a></div><div class="privacy-note"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/></svg><p><strong>密钥留在你的浏览器。</strong> 不上传、不存储，没有统计脚本。刷新或关闭页面后需重新输入。</p></div></footer>
+  </div>
+  <noscript><p class="nojs">此工具需要启用 JavaScript，所有验证码均在浏览器本地计算。</p></noscript>
+</body>
+</html>
